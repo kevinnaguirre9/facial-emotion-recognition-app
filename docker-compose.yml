@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/app
+    container_name: face-emotion-detection-app
+    restart: unless-stopped
+    tty: true
+    command: streamlit run --server.port 8080 app.py
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/var/www/app
+    networks:
+      - face-emotion-detection-app-net
+
+networks:
+  face-emotion-detection-app-net:
+    driver: bridge
