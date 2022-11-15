@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers import Conv2D
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import MaxPooling2D
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.layers import Conv2D
+from keras.optimizers import Adam
+from keras.layers import MaxPooling2D
+from keras.preprocessing.image import ImageDataGenerator
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -39,7 +39,7 @@ def plot_model_history(model_history):
 totalTrainingImages = 28709
 totalValidationImages = 7178
 batchSize = 64
-epochs = 50
+epochs = 100
 
 # Initialize image data generators with rescaling
 trainingDataGenerator = ImageDataGenerator(rescale=1./255)
@@ -48,7 +48,7 @@ validationDataGenerator = ImageDataGenerator(rescale=1./255)
 
 # Preprocess train images
 trainingGenerator = trainingDataGenerator.flow_from_directory(
-        '../../dataset/train', # it'll go through the train directory, fetch all the images and labeled then according to the folder name (emotions)
+        '../dataset/train', # it'll go through the train directory, fetch all the images and labeled then according to the folder name (emotions)
         target_size=(48,48), # each image will be resized to 48 by 48
         batch_size=batchSize,
         color_mode="grayscale", # images will have gray color,
@@ -56,7 +56,7 @@ trainingGenerator = trainingDataGenerator.flow_from_directory(
 
 # Preprocess test images
 validationGenerator = validationDataGenerator.flow_from_directory(
-        '../../dataset/test',
+        '../dataset/test',
         target_size=(48,48),
         batch_size=batchSize,
         color_mode="grayscale",
@@ -86,7 +86,7 @@ model.add(Dense(7, activation='softmax')) # Last dense layer with 7 categories, 
 # Train the Neural Network Model
 model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
 
-modelInformation = model.fit_generator(
+modelInformation = model.fit(
         trainingGenerator,
         steps_per_epoch=totalTrainingImages // batchSize,
         epochs=epochs,
@@ -97,6 +97,6 @@ modelInformation = model.fit_generator(
 plot_model_history(modelInformation)
 
 # Save the models
-model.save_weights('model.h5')
+model.save_weights('../model.h5')
 
 
