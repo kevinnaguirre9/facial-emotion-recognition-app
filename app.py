@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
+from streamlit_modal import Modal
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D
@@ -46,7 +47,7 @@ model.add(Dense(7, activation='softmax'))
 
 
 # emotions will be displayed on your face from the webcam feed
-model.load_weights('src/model.h5')
+model.load_weights('src/neural-network/model.h5')
 
 # prevents openCL usage and unnecessary logging messages
 cv2.ocl.setUseOpenCL(False)
@@ -98,20 +99,100 @@ def detectEmotions(frame: av.VideoFrame) -> av.VideoFrame:
     return av.VideoFrame.from_ndarray(newFrame, format="bgr24")
 
 
-# Just a smple callback when video ends
+# Just a simple callback when video ends
 def endVideo():
     print("Video has ended!")
 
+# webrtc_streamer(
+#     key="example", 
+#     mode=WebRtcMode.SENDRECV,
+#     media_stream_constraints={"video": True},
+#     # video_html_attrs={
+#     #     "style": {"width": "100%", "margin": "0 auto", "border": "5px white solid"},
+#     #     "controls": False,
+#     #     "autoPlay": True,
+#     # },
+#     video_frame_callback=detectEmotions,
+#     on_video_ended=endVideo,
+# )
 
-webrtc_streamer(
-    key="example", 
-    mode=WebRtcMode.SENDRECV,
-    media_stream_constraints={"video": True},
-    # video_html_attrs={
-    #     "style": {"width": "100%", "margin": "0 auto", "border": "5px white solid"},
-    #     "controls": False,
-    #     "autoPlay": True,
-    # },
-    video_frame_callback=detectEmotions,
-    on_video_ended=endVideo,
-)
+
+
+
+
+def openModal(identifier):
+    # modal = Modal("Demo Modal", identifier)
+    # # open_modal = st.button("Open")
+    # # if open_modal:
+    # #     modal.open()
+
+    # # modal.open()
+
+    # if modal.is_open():
+    #     with modal.container():
+    #         st.write("Text goes here")
+
+
+    #         webrtc_streamer(
+    #             key=f"example{identifier}",
+    #             mode=WebRtcMode.SENDRECV,
+    #             media_stream_constraints={"video": True},
+    #             # video_html_attrs={
+    #             #     "style": {"width": "100%", "margin": "0 auto", "border": "5px white solid"},
+    #             #     "controls": False,
+    #             #     "autoPlay": True,
+    #             # },
+    #             video_frame_callback=detectEmotions,
+    #             on_video_ended=endVideo,
+    #         )
+
+    #         st.write("Some fancy text")
+    #         value = st.checkbox("Check me", key=identifier)
+    #         st.write(f"Checkbox checked: {value}")
+    print(identifier)
+
+
+
+user_data = [
+    {
+        'email': 'test@gmail.com',
+        'uid': 'uuid1',
+        'verified': True,
+        'disabled': False,
+    },
+    {
+        'email': 'test1@gmail.com',
+        'uid': 'uuid2',
+        'verified': True,
+        'disabled': True,
+    },
+    {
+        'email': 'test2@gmail.com',
+        'uid': 'uuid3',
+        'verified': True,
+        'disabled': False,
+    }
+];
+
+user_table = pd.DataFrame(user_data)
+
+
+colms = st.columns((1, 2, 2, 1, 1))
+fields = ["№", 'email', 'uid', 'verified', "action"]
+for col, field_name in zip(colms, fields):
+    # header
+    col.write(field_name)
+
+for x, email in enumerate(user_table['email']):
+    col1, col2, col3, col4, col5 = st.columns((1, 2, 2, 1, 1))
+    col1.write(x)  # index
+    col2.write(user_table['email'][x])  # email
+    col3.write(user_table['uid'][x])  # unique ID
+    col4.write(user_table['verified'][x])   # email status
+    disable_status = user_table['disabled'][x]  # flexible type of button
+    button_type_text = "Unblock" if disable_status else "Block"
+    button_phold = col5.empty()  # create a placeholder
+    do_action = button_phold.button(button_type_text, key=x, on_click=openModal, kwargs=dict(identifier=x))
+    # if do_action:
+    #         pass # do some action with a row's data
+    #         button_phold.empty()  #  remove butt
