@@ -22,7 +22,15 @@ class DailySchedule:
 
     def to_primitives(self) -> dict:
         return {
-            'day': self.__day.value,
+            'weekday': self.__day.value,
             'start_time': self.__start_time.strftime('%H:%M'),
             'end_time': self.__end_time.strftime('%H:%M')
         }
+
+    @classmethod
+    def from_primitives(cls, daily_schedule: dict) -> 'DailySchedule':
+        return cls(
+            Weekday(daily_schedule['weekday']),
+            time.fromisoformat(daily_schedule['start_time']),
+            time.fromisoformat(daily_schedule['end_time'])
+        )

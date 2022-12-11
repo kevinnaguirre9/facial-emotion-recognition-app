@@ -68,3 +68,15 @@ class Class(BaseEntity):
             'schedule': self.schedule().to_primitives(),
             'created_at': self.created_at().isoformat(),
         }
+
+    @classmethod
+    def from_primitives(cls, class_data: dict) -> 'Class':
+        return cls(
+            ClassId(class_data['class_id']),
+            class_data['subject'],
+            class_data['degree'],
+            class_data['section'],
+            class_data['academic_period'],
+            Schedule.from_primitives(class_data['schedule']),
+            datetime.fromisoformat(class_data['created_at'])
+        )

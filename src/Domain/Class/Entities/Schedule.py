@@ -21,3 +21,9 @@ class Schedule:
 
     def to_primitives(self) -> list[dict]:
         return [daily_schedule.to_primitives() for daily_schedule in self.__weekly_schedule]
+
+    @classmethod
+    def from_primitives(cls, weekly_schedule: list[dict]) -> 'Schedule':
+        return cls(
+            [DailySchedule.from_primitives(daily_schedule) for daily_schedule in weekly_schedule]
+        )

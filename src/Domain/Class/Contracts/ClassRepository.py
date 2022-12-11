@@ -10,11 +10,11 @@ class ClassRepository(ABC):
         pass
 
     @abstractmethod
-    def find(self, class_id: ClassId) -> Class | None:
+    def find(self, class_id: ClassId) -> Class|None:
         pass
 
     @abstractmethod
-    def search(self, criteria: list) -> list[Class]:
+    def search(self, criteria: dict, limit: int, page: int) -> list[Class]|None:
         pass
 
     @abstractmethod
