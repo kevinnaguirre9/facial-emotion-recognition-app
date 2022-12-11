@@ -11,3 +11,4 @@ matplotlib==3.6.2
 scipy==1.9.3
 dependency-injector==4.40.0
 pymongo==4.3.3
+Faker==15.3.4

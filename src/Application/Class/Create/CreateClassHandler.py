@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 
 from src.Application.Class.Create import CreateClassCommand
 from src.Domain.Class.Class import Class
@@ -20,9 +20,9 @@ class CreateClassHandler(CommandHandler):
 
         weekly_schedule = [
             DailySchedule(
-                Weekday(daily_schedule.weekday.upper()),
-                time.strptime(daily_schedule.start_time, '%H:%M'),
-                time.strptime(daily_schedule.end_time, '%H:%M')
+                Weekday[daily_schedule.get('weekday').upper()],
+                datetime.strptime(daily_schedule.get('start_time'), '%H:%M').time(),
+                datetime.strptime(daily_schedule.get('end_time'), '%H:%M').time()
             )
             for daily_schedule in command.weekly_schedule()
         ]

@@ -18,6 +18,4 @@ class DailySchedule:
         return self.__end_time
 
     def __eq__(self, other: 'DailySchedule') -> bool:
-        return self.__day == other.__day \
-            and self.__start_time == other.__start_time \
-            and self.__end_time == other.__end_time
+        return self.__day == other.__day
