@@ -18,3 +18,6 @@ class Schedule:
             schedule_days.append(daily_schedule)
 
         schedule_days.clear()
+
+    def to_primitives(self) -> list[dict]:
+        return [daily_schedule.to_primitives() for daily_schedule in self.__weekly_schedule]

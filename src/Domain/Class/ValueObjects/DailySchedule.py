@@ -19,3 +19,10 @@ class DailySchedule:
 
     def __eq__(self, other: 'DailySchedule') -> bool:
         return self.__day == other.__day
+
+    def to_primitives(self) -> dict:
+        return {
+            'day': self.__day.value,
+            'start_time': self.__start_time.strftime('%H:%M'),
+            'end_time': self.__end_time.strftime('%H:%M')
+        }

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.Domain.Common.BaseEntity import BaseEntity
 from src.Domain.Class.ValueObjects.ClassId import ClassId
 from src.Domain.Class.Entities.Schedule import Schedule
@@ -11,7 +13,8 @@ class Class(BaseEntity):
             degree: str,
             section: str,
             academic_period: str,
-            schedule: Schedule
+            schedule: Schedule,
+            created_at: datetime,
     ):
         super().__init__(class_id)
         self.__class_id = class_id
@@ -20,6 +23,7 @@ class Class(BaseEntity):
         self.__section = section
         self.__academic_period = academic_period
         self.__schedule = schedule
+        self.__created_at = created_at
 
 
     @staticmethod
@@ -31,7 +35,7 @@ class Class(BaseEntity):
             academic_period: str,
             schedule: Schedule
     ):
-        return Class(class_id, subject, degree, section, academic_period, schedule)
+        return Class(class_id, subject, degree, section, academic_period, schedule, datetime.now())
 
     def class_id(self) -> ClassId:
         return self.__class_id
@@ -50,3 +54,17 @@ class Class(BaseEntity):
 
     def schedule(self) -> Schedule:
         return self.__schedule
+
+    def created_at(self) -> datetime:
+        return self.__created_at
+
+    def to_primitives(self) -> dict:
+        return {
+            'class_id': self.class_id().value(),
+            'subject': self.subject(),
+            'degree': self.degree(),
+            'section': self.section(),
+            'academic_period': self.academic_period(),
+            'schedule': self.schedule().to_primitives(),
+            'created_at': self.created_at().isoformat(),
+        }

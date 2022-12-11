@@ -11,12 +11,12 @@ class Uuid:
     def generate() -> str:
         return str(uuid.uuid4())
 
-    def get_value(self) -> str:
+    def value(self) -> str:
         return self.__value
 
     def __str__(self) -> str:
-        return self.get_value()
+        return self.value()
 
     def __eq__(self, other: 'Uuid') -> bool:
-        return self.__value == other.__value
+        return self.value() == other.value()
 

@@ -9,12 +9,38 @@ services:
     restart: unless-stopped
     tty: true
     command: streamlit run --server.port 8080 app.py
+    env_file:
+      - .env
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./:/var/www/app
     networks:
       - face-emotion-detection-app-net
+
+  mongo:
+    image: "mongo:5.0"
+    container_name: face-emotion-detection-mongo-db
+    command: mongod --auth
+    restart: unless-stopped
+    logging:
+      driver: none
+    ports:
+      - "${MONGO_DB_INTERNAL_LOCALHOST_PORT:-27017}:${MONGO_DB_PORT:-27017}"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
+    volumes:
+      - 'mongo-data:/data/db'
+      - 'mongo-log:/var/log/mongodb/'
+    networks:
+      - face-emotion-detection-app-net
+
+volumes:
+  mongo-data:
+    driver: local
+  mongo-log:
+      driver: local
 
 networks:
   face-emotion-detection-app-net:

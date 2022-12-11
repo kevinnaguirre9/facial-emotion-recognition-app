@@ -20,14 +20,14 @@ class CreateClassHandler(CommandHandler):
 
         weekly_schedule = [
             DailySchedule(
-                Weekday[daily_schedule.get('weekday').upper()],
+                Weekday.from_name(daily_schedule.get('weekday')),
                 datetime.strptime(daily_schedule.get('start_time'), '%H:%M').time(),
                 datetime.strptime(daily_schedule.get('end_time'), '%H:%M').time()
             )
             for daily_schedule in command.weekly_schedule()
         ]
 
-        class_entity = Class(
+        class_entity = Class.create(
             ClassId(),
             subject = command.subject(),
             degree = command.degree(),

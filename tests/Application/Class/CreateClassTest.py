@@ -1,7 +1,8 @@
-from unittest import TestCase
-from unittest.mock import Mock, patch
-from faker import Faker
 import random
+from unittest import TestCase
+from unittest.mock import Mock
+
+from faker import Faker
 
 from src.Application.Class.Create.CreateClassCommand import CrateClassCommand
 from src.Application.Class.Create.CreateClassHandler import CreateClassHandler
@@ -12,7 +13,6 @@ class CreateClassTest(TestCase):
     def setUp(self):
         self.__faker = Faker()
         self.__repository = Mock()
-
 
     def test_should_create_class(self):
 

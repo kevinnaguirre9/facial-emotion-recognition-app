@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.Domain.Class.Class import Class
 from src.Domain.Class.ValueObjects.ClassId import ClassId
 
