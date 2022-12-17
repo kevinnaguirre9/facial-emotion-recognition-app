@@ -50,17 +50,17 @@ class Session(BaseEntity):
     def end_date(self) -> datetime|None:
         return self.__ended_at
 
-    def to_primitive(self):
+    def to_primitives(self):
         return {
             'session_id': self.session_id().value(),
             'class_id': self.class_id().value(),
             'created_at': self.creation_date().isoformat(),
-            'started_at': self.start_date().isoformat(),
-            'ended_at': self.end_date().isoformat(),
+            'started_at': self.start_date().isoformat() if self.start_date() else None,
+            'ended_at': self.end_date().isoformat() if self.end_date() else None,
         }
 
     @classmethod
-    def from_primitive(cls, session_data: dict) -> 'Session':
+    def from_primitives(cls, session_data: dict) -> 'Session':
         return cls(
             SessionId(session_data['session_id']),
             ClassId(session_data['class_id']),
