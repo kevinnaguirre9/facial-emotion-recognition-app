@@ -1,6 +1,6 @@
 ﻿# 🔭Face Emotion Recognition App
 
-Streamlit web app for real-time face emotion recognition using streamlit-webrtc component
+Facial Emotion Recognition web application to monitor students's mood in a classroom
 
 ## First steps
 
