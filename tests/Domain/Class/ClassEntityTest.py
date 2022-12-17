@@ -1,4 +1,3 @@
-import json
 from unittest import TestCase
 
 from src.Domain.Class.Exceptions.DuplicatedDailySchedule import DuplicatedDailySchedule
