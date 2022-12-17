@@ -1,6 +1,6 @@
 ﻿# 🔭Face Emotion Recognition App
 
-Facial Emotion Recognition web application to monitor student's mood in a classroom
+Real-time Streamlit Facial Emotion Recognition web application to monitor student's mood in a classroom
 
 ## First steps
 
