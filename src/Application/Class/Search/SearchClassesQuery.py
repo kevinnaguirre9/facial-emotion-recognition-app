@@ -1,7 +1,7 @@
-from src.Domain.Common.Contracts.Command import Command
+from src.Domain.Common.Contracts.Query import Query
 
 
-class SearchClassesCommand(Command):
+class SearchClassesQuery(Query):
 
     def __init__(self, filters: dict, page: int, per_page: int):
         self.__filters = filters

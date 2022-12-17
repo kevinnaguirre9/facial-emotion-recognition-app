@@ -2,22 +2,22 @@ from collections.abc import Callable
 
 from src.Application.Class.ClassResponse import ClassResponse
 from src.Application.Class.ClassesResponse import ClassesResponse
-from src.Application.Class.Search.SearchClassesCommand import SearchClassesCommand
+from src.Application.Class.Search.SearchClassesQuery import SearchClassesQuery
 from src.Domain.Class.Class import Class
 from src.Domain.Class.Contracts.ClassRepository import ClassRepository
-from src.Domain.Common.Contracts.CommandHandler import CommandHandler
+from src.Domain.Common.Contracts.QueryHandler import QueryHandler
 
 
-class SearchClassesHandler(CommandHandler):
+class SearchClassesHandler(QueryHandler):
 
     def __init__(self, repository: ClassRepository):
         self.__repository = repository
 
-    def handle(self, command: SearchClassesCommand) -> ClassesResponse:
+    def handle(self, query: SearchClassesQuery) -> ClassesResponse:
         classes = self.__repository.search(
-            command.filters(),
-            command.per_page(),
-            command.page()
+            query.filters(),
+            query.per_page(),
+            query.page()
         )
 
         return ClassesResponse(
