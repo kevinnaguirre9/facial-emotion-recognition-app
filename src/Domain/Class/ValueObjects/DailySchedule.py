@@ -22,7 +22,7 @@ class DailySchedule:
 
     def to_primitives(self) -> dict:
         return {
-            'weekday': self.__day.value,
+            'weekday': self.__day.value(),
             'start_time': self.__start_time.strftime('%H:%M'),
             'end_time': self.__end_time.strftime('%H:%M')
         }
