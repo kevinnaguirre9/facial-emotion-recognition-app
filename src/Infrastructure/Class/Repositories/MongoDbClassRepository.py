@@ -30,7 +30,7 @@ class MongoDbClassRepository(ClassRepository):
         if class_entity is None:
             return None
 
-        return self.to_entity()(dict(class_entity))
+        return self.__to_entity()(dict(class_entity))
 
 
     def search(self, criteria: dict, limit: int, page: int) -> list[Class]|None:
@@ -40,7 +40,7 @@ class MongoDbClassRepository(ClassRepository):
             .skip((page - 1) * limit)\
             .limit(limit)
 
-        return list(map(self.to_entity(), classes))
+        return list(map(self.__to_entity(), classes))
 
 
     def delete(self, class_entity: Class) -> None:
@@ -48,5 +48,5 @@ class MongoDbClassRepository(ClassRepository):
             .delete_one({'class_id': class_entity.class_id().value()})
 
     @classmethod
-    def to_entity(cls) -> Callable[[dict], Class]:
+    def __to_entity(cls) -> Callable[[dict], Class]:
         return lambda class_data: Class.from_primitives(class_data)

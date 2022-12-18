@@ -9,3 +9,7 @@ class Emotion(Enum):
     NEUTRAL = 4
     SAD = 5
     SURPRISED = 6
+
+    @staticmethod
+    def from_name(emotion: str) -> 'Emotion':
+        return Emotion[emotion.upper()]

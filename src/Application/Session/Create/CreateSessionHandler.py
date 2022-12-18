@@ -26,7 +26,7 @@ class CreateSessionHandler(CommandHandler):
             ClassId(command.class_id())
         )
 
-        self.ensure_class_exists(class_entity)
+        self.__ensure_class_exists(class_entity)
 
         session = Session.create(
             SessionId(),
@@ -39,6 +39,6 @@ class CreateSessionHandler(CommandHandler):
 
 
     @classmethod
-    def ensure_class_exists(cls, class_entity: Class|None):
+    def __ensure_class_exists(cls, class_entity: Class|None):
         if class_entity is None:
             raise ClassNotFound()

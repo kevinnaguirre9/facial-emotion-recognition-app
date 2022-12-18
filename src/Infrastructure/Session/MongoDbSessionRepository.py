@@ -30,7 +30,7 @@ class MongoDbSessionRepository(SessionRepository):
         if session_entity is None:
             return None
 
-        return self.to_entity()(dict(session_entity))
+        return self.__to_entity()(dict(session_entity))
 
 
     def search(self, criteria: dict, limit: int, page: int) -> list[Session] | None:
@@ -40,7 +40,7 @@ class MongoDbSessionRepository(SessionRepository):
             .skip((page - 1) * limit) \
             .limit(limit)
 
-        return list(map(self.to_entity(), sessions))
+        return list(map(self.__to_entity(), sessions))
 
 
     def delete(self, session_entity: Session) -> None:
@@ -49,5 +49,5 @@ class MongoDbSessionRepository(SessionRepository):
 
 
     @classmethod
-    def to_entity(cls) -> Callable[[dict], Session]:
+    def __to_entity(cls) -> Callable[[dict], Session]:
         return lambda session_data: Session.from_primitives(session_data)
