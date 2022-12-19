@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from src.Domain.Class.ValueObjects.ClassId import ClassId
-from src.Infrastructure.Class.Repositories.MongoDbClassRepository import MongoDbClassRepository
-from src.Infrastructure.Common.MongoDBClient import MongoDBClient
+from src.Repositories.Class.MongoDbClassRepository import MongoDbClassRepository
+from src.Repositories.Common.MongoDBClient import MongoDBClient
 from tests.Domain.Class.Stubs.ClassStub import ClassStub
 
 

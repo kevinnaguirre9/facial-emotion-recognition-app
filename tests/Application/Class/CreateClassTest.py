@@ -4,8 +4,8 @@ from unittest.mock import Mock
 
 from faker import Faker
 
-from src.Application.Class.Create.CreateClassCommand import CrateClassCommand
-from src.Application.Class.Create.CreateClassHandler import CreateClassHandler
+from src.Services.Class.Create.CreateClassCommand import CrateClassCommand
+from src.Services.Class.Create.ClassCreator import ClassCreator
 
 
 class CreateClassTest(TestCase):
@@ -35,4 +35,4 @@ class CreateClassTest(TestCase):
             ]
         )
 
-        CreateClassHandler(self.__repository).handle(command)
+        ClassCreator(self.__repository).handle(command)

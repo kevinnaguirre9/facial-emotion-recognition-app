@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.Infrastructure.Common.MongoDBClient import MongoDBClient
-from src.Infrastructure.Session.MongoDbSessionRepository import MongoDbSessionRepository
+from src.Repositories.Common.MongoDBClient import MongoDBClient
+from src.Repositories.Session.MongoDbSessionRepository import MongoDbSessionRepository
 from tests.Domain.Session.Stubs.SessionStub import SessionStub
 
 
