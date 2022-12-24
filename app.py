@@ -47,7 +47,7 @@ model.add(Dense(7, activation='softmax'))
 
 
 # emotions will be displayed on your face from the webcam feed
-model.load_weights('src/neural-network/model.h5')
+model.load_weights('src/neural-network/emotion_model_weights.h5')
 
 # prevents openCL usage and unnecessary logging messages
 cv2.ocl.setUseOpenCL(False)
