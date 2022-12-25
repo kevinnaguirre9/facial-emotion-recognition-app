@@ -14,3 +14,4 @@ pymongo==4.3.3
 Faker==15.3.4
 av==9.2.0
 tqdm==4.64.1
+streamlit-echarts==0.4.0
