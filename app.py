@@ -6,25 +6,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 import altair as alt
 
+from containers.ServiceContainer import ServiceContainer
 from src.Services.EmotionRecognition.Recognize.ClassroomStudentsEmotionsRecognizer import \
     ClassroomStudentsEmotionsRecognizer
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
+#
+# st.set_page_config(layout="wide")
+#
+# hide_menu_style = """
+#         <style>
+#         #MainMenu {visibility: hidden;}
+#         footer {visibility: hidden;}
+#         </style>
+#         """
+# st.markdown(hide_menu_style, unsafe_allow_html=True)
 
-st.set_page_config(layout="wide")
-
-hide_menu_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        </style>
-        """
-st.markdown(hide_menu_style, unsafe_allow_html=True)
-
-st.title('Face emotion detection app')
+st.title('Face emotion detection containers')
 
 st.subheader('Press start for capturing students in classroom!')
 
+
+container = ServiceContainer()
+container.init_resources()
+container.wire(packages=[__name__])
 
 
 # Just a simple callback when video ends

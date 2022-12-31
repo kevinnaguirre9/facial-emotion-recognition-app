@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 from keras.models import model_from_json
 
@@ -18,7 +20,7 @@ class FaceEmotionRecognizer:
         return Emotion.from_name(self.__emotions.get(max_score_index))
 
     def __load_model(self):
-        emotion_model_json_file = open("../../../../neural-network/model/emotion_model.json", "r")
+        emotion_model_json_file = open('neural-network/model/emotion_model.json', 'r')
 
         loaded_emotion_model = emotion_model_json_file.read()
 
@@ -26,4 +28,4 @@ class FaceEmotionRecognizer:
 
         emotion_model = model_from_json(loaded_emotion_model)
 
-        self.__emotion_model = emotion_model.load_weights("../../../../neural-network/model/emotion_model.h5")
+        self.__emotion_model = emotion_model.load_weights('neural-network/model/emotion_model.h5')

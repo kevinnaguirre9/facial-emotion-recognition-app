@@ -11,11 +11,11 @@ class MongoDbClassRepository(ClassRepository):
     COLLECTION_NAME = 'classes'
 
     def __init__(self, mongo_client: MongoDBClient):
-        self.__mongo_client = mongo_client.get_connection()
+        self.__mongo_db_connection = mongo_client.get_db_connection()
 
 
     def save(self, class_entity: Class):
-        self.__mongo_client[self.COLLECTION_NAME]\
+        self.__mongo_db_connection[self.COLLECTION_NAME]\
             .update_one(
                 {'class_id': class_entity.class_id().value()},
                 {'$set': class_entity.to_primitives()},
@@ -24,7 +24,7 @@ class MongoDbClassRepository(ClassRepository):
 
 
     def find(self, class_id: ClassId) -> Class | None:
-        class_entity = self.__mongo_client[self.COLLECTION_NAME]\
+        class_entity = self.__mongo_db_connection[self.COLLECTION_NAME]\
             .find_one({'class_id': class_id.value()})
 
         if class_entity is None:
@@ -34,7 +34,7 @@ class MongoDbClassRepository(ClassRepository):
 
 
     def search(self, criteria: dict, limit: int, page: int) -> list[Class]|None:
-        classes = self.__mongo_client[self.COLLECTION_NAME]\
+        classes = self.__mongo_db_connection[self.COLLECTION_NAME]\
             .find(criteria)\
             .sort('created_at', -1)\
             .skip((page - 1) * limit)\
@@ -44,7 +44,7 @@ class MongoDbClassRepository(ClassRepository):
 
 
     def delete(self, class_entity: Class) -> None:
-        self.__mongo_client[self.COLLECTION_NAME]\
+        self.__mongo_db_connection[self.COLLECTION_NAME]\
             .delete_one({'class_id': class_entity.class_id().value()})
 
     @classmethod

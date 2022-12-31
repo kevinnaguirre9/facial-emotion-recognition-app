@@ -11,7 +11,7 @@ class MongoDbSessionRepository(SessionRepository):
     COLLECTION_NAME = 'sessions'
 
     def __init__(self, mongo_client: MongoDBClient):
-        self.__mongo_client = mongo_client.get_connection()
+        self.__mongo_client = mongo_client.get_db_connection()
 
 
     def save(self, session_entity: Session):

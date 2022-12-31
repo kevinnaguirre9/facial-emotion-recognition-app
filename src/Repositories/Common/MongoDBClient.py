@@ -5,12 +5,9 @@ import config.database as db_config
 
 class MongoDBClient:
 
-    def __init__(self):
-        self.__client = MongoClient(db_config.MONGO_DB_URI)
+    def __init__(self, mongo_client: MongoClient, database_name: str):
+        self.__db_connection = mongo_client[database_name]
 
-    def get_connection(self) -> Database:
-        return self.__client[db_config.MONGO_DB_NAME]
-
-    def close_connection(self):
-        self.__client.close()
+    def get_db_connection(self) -> Database:
+        return self.__db_connection
 

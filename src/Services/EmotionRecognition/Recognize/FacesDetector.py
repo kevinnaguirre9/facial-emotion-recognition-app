@@ -21,4 +21,4 @@ class FacesDetector:
 
     def __load_haar_cascade_face_detector(self):
         self.__face_cascade_classifier = cv2\
-            .CascadeClassifier('../../../../neural-network/model/haarcascade_frontalface_default.xml')
+            .CascadeClassifier('neural-network/model/haarcascade_frontalface_default.xml')

@@ -1,0 +1,32 @@
+from dependency_injector import containers, providers
+from pymongo import MongoClient
+
+import config.database as db_config
+from src.Repositories.Common.MongoDBClient import MongoDBClient
+from src.Repositories.EmotionRecognition.MongoDbEmotionRecognitionRepository import MongoDbEmotionRecognitionRepository
+
+
+class ServiceContainer(containers.DeclarativeContainer):
+
+    pymongo_mongo_client = providers.Singleton(
+        MongoClient,
+        host = db_config.MONGO_DB_URI,
+    )
+
+    mongo_db_repository_client = providers.Factory(
+        MongoDBClient,
+        mongo_client = pymongo_mongo_client,
+        database_name = db_config.MONGO_DB_NAME
+    )
+
+    mongo_db_emotion_recognition_repository = providers.Factory(
+        MongoDbEmotionRecognitionRepository,
+        mongo_client = mongo_db_repository_client
+    )
+
+    # emotion_recognizer_register = providers.Factory(
+    #     EmotionRecognitionRegister,
+    #     emotion_recognition_repository = mongo_db_emotion_recognition_repository
+    # )
+
+

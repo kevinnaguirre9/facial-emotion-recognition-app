@@ -11,20 +11,15 @@ from src.Services.EmotionRecognition.Register.RegisterEmotionRecognitionCommand 
 
 class ClassroomStudentsEmotionsRecognizer:
 
-    def __init__(
-            self,
-            faces_detector: FacesDetector,
-            face_emotion_recognizer: FaceEmotionRecognizer,
-            emotion_recognizer_register: EmotionRecognitionRegister
-    ):
-        self.__faces_detector = faces_detector
-        self.__face_emotion_recognizer = face_emotion_recognizer
-        self.__emotion_recognizer_register = emotion_recognizer_register
+    def __init__(self):
+        self.__faces_detector = FacesDetector()
+        self.__face_emotion_recognizer = FaceEmotionRecognizer()
+        self.__emotion_recognizer_register = EmotionRecognitionRegister()
         cv2.ocl.setUseOpenCL(False)
 
 
 
-    def recognize(self, session_id: str, video_frame: av.VideoFrame) -> av.VideoFrame:
+    def recognize(self, video_frame: av.VideoFrame) -> av.VideoFrame:
 
         video_frame = video_frame.to_ndarray(format="bgr24")
 
@@ -65,7 +60,7 @@ class ClassroomStudentsEmotionsRecognizer:
                 lineType = cv2.LINE_AA
             )
 
-        self.__save_emotion_recognition(session_id, emotions_recognized_registry)
+        self.__save_emotion_recognition('f630f8e7-5b9f-4ef9-afd2-72e85955735f', emotions_recognized_registry)
 
         return av.VideoFrame.from_ndarray(video_frame, format="bgr24")
 
