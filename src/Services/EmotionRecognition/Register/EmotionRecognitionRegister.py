@@ -11,7 +11,7 @@ class EmotionRecognitionRegister:
         self.__emotion_recognition_repository = emotion_recognition_repository
 
 
-    def handle(self, command: RegisterEmotionRecognitionCommand):
+    def register(self, command: RegisterEmotionRecognitionCommand):
 
         session_id = SessionId(command.session_id())
 
