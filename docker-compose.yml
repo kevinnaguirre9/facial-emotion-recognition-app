@@ -8,7 +8,6 @@ services:
     container_name: facial-emotion-recognition-app
     restart: unless-stopped
     tty: true
-    command: streamlit run --server.port 8080 app.py
     env_file:
       - .env
     ports:

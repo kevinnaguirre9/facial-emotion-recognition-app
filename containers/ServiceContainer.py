@@ -1,5 +1,6 @@
 from dependency_injector import containers, providers
 from pymongo import MongoClient
+import logging.config
 
 import config.database as db_config
 from src.Repositories.Common.MongoDBClient import MongoDBClient
@@ -7,6 +8,11 @@ from src.Repositories.EmotionRecognition.MongoDbEmotionRecognitionRepository imp
 
 
 class ServiceContainer(containers.DeclarativeContainer):
+
+    logging = providers.Resource(
+        logging.config.fileConfig,
+        fname="logging.ini",
+    )
 
     pymongo_mongo_client = providers.Singleton(
         MongoClient,
@@ -19,7 +25,7 @@ class ServiceContainer(containers.DeclarativeContainer):
         database_name = db_config.MONGO_DB_NAME
     )
 
-    mongo_db_emotion_recognition_repository = providers.Factory(
+    emotion_recognition_repository = providers.Factory(
         MongoDbEmotionRecognitionRepository,
         mongo_client = mongo_db_repository_client
     )

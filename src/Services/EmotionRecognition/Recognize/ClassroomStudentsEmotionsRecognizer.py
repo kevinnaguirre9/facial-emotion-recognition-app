@@ -2,6 +2,7 @@ import cv2
 import av
 import numpy as np
 
+from src.Domain.EmotionRecognition.Contracts.EmotionRecognitionRepository import EmotionRecognitionRepository
 from src.Domain.EmotionRecognition.ValueObjects.Emotion import Emotion
 from src.Services.EmotionRecognition.Recognize.FaceEmotionRecognizer import FaceEmotionRecognizer
 from src.Services.EmotionRecognition.Recognize.FacesDetector import FacesDetector
@@ -11,32 +12,42 @@ from src.Services.EmotionRecognition.Register.RegisterEmotionRecognitionCommand 
 
 class ClassroomStudentsEmotionsRecognizer:
 
-    def __init__(self):
+    def __init__(
+            self,
+            emotion_recognition_repository: EmotionRecognitionRepository,
+            session_id: str,
+    ):
+        self.__session_id = session_id
         self.__faces_detector = FacesDetector()
         self.__face_emotion_recognizer = FaceEmotionRecognizer()
-        self.__emotion_recognizer_register = EmotionRecognitionRegister()
+        self.__emotion_recognizer_register = EmotionRecognitionRegister(emotion_recognition_repository)
         cv2.ocl.setUseOpenCL(False)
 
 
 
     def recognize(self, video_frame: av.VideoFrame) -> av.VideoFrame:
 
-        video_frame = video_frame.to_ndarray(format="bgr24")
+        print(f"Recognizing emotions for session: {self.__session_id}")
 
-        gray_video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
+        ndarray_video_frame = video_frame.to_ndarray(format="bgr24")
+
+        gray_video_frame = cv2.cvtColor(ndarray_video_frame, cv2.COLOR_BGR2GRAY)
 
         emotions_recognized_registry = {emotion.name: 0 for emotion in Emotion}
 
         faces = self.__faces_detector.detect(gray_video_frame)
 
+        if not np.any(faces):
+            return video_frame
+
         for (corner_x, corner_y, width, height) in faces:
 
             cv2.rectangle(
-                image = video_frame,
-                start_point = (corner_x, corner_y - 50),
-                end_point = (corner_x + width, corner_y + height + 10),
-                color = (255, 0, 0),
-                thickness = 2
+                ndarray_video_frame,
+                (corner_x, corner_y - 50),
+                (corner_x + width, corner_y + height + 10),
+                (255, 0, 0),
+                2
             )
 
             region_of_interest = gray_video_frame[corner_y:corner_y + height, corner_x:corner_x + width]
@@ -50,19 +61,19 @@ class ClassroomStudentsEmotionsRecognizer:
             emotions_recognized_registry[emotion_prediction.name] += 1
 
             cv2.putText(
-                image = video_frame,
-                text = emotion_prediction.name,
-                org = (corner_x + 20, corner_y - 60),
-                font = cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale = 1,
-                color = (255, 255, 255),
-                thickness = 2,
-                lineType = cv2.LINE_AA
+                ndarray_video_frame,
+                emotion_prediction.name,
+                (corner_x + 20, corner_y - 60),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (255, 255, 255),
+                2,
+                cv2.LINE_AA
             )
 
-        self.__save_emotion_recognition('f630f8e7-5b9f-4ef9-afd2-72e85955735f', emotions_recognized_registry)
+        self.__save_emotion_recognition(self.__session_id, emotions_recognized_registry)
 
-        return av.VideoFrame.from_ndarray(video_frame, format="bgr24")
+        return av.VideoFrame.from_ndarray(ndarray_video_frame, format="bgr24")
 
 
 

@@ -1,4 +1,5 @@
 import cv2
+from numpy import ndarray
 
 
 class FacesDetector:
@@ -12,7 +13,7 @@ class FacesDetector:
         self.__scale_factor = scale_factor or self.DEFAULT_SCALE_FACTOR
         self.__min_neighbors = min_neighbors or self.DEFAULT_MIN_NEIGHBORS
 
-    def detect(self, gray_frame):
+    def detect(self, gray_frame: ndarray) -> ndarray:
         return self.__face_cascade_classifier.detectMultiScale(
             gray_frame,
             self.__scale_factor,

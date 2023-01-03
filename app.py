@@ -1,14 +1,12 @@
+import logging
 import streamlit as st
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
-import cv2
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import altair as alt
-
 from containers.ServiceContainer import ServiceContainer
 from src.Services.EmotionRecognition.Recognize.ClassroomStudentsEmotionsRecognizer import \
     ClassroomStudentsEmotionsRecognizer
+import src
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 #
@@ -26,10 +24,21 @@ st.title('Face emotion detection containers')
 
 st.subheader('Press start for capturing students in classroom!')
 
-
+# if __name__ == "__main__":
 container = ServiceContainer()
 container.init_resources()
-container.wire(packages=[__name__])
+container.wire(packages=[src])
+
+logger = logging.getLogger(__name__)
+logger.debug("'--------------------------------------Starting streamlit app")
+
+#
+# LOGGER = logging.getLogger(__name__)
+# LOGGER.addHandler(logging.StreamHandler())
+#
+# LOGGER.info('--------------------------------------')
+# LOGGER.debug("Starting video streamer...")
+# LOGGER.info('--------------------------------------')
 
 
 # Just a simple callback when video ends
@@ -38,16 +47,19 @@ def endVideo():
 
 
 webrtc_streamer(
-    key="example",
-    mode=WebRtcMode.SENDRECV,
-    media_stream_constraints={"video": True},
+    key = "example",
+    mode = WebRtcMode.SENDRECV,
+    media_stream_constraints = {"video": True},
     # video_html_attrs={
     #     "style": {"width": "100%", "margin": "0 auto", "border": "5px white solid"},
     #     "controls": False,
     #     "autoPlay": True,
     # },
-    video_frame_callback=ClassroomStudentsEmotionsRecognizer().recognize,
-    on_video_ended=endVideo,
+    video_frame_callback = ClassroomStudentsEmotionsRecognizer(
+        container.emotion_recognition_repository(),
+        '123',
+    ).recognize,
+    on_video_ended = endVideo,
 )
 
 
