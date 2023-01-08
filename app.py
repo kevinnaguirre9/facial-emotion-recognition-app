@@ -57,7 +57,7 @@ webrtc_streamer(
     # },
     video_frame_callback = ClassroomStudentsEmotionsRecognizer(
         container.emotion_recognition_repository(),
-        '123',
+        'b31769ab-3221-44f6-a154-52a0e72a0347',
     ).recognize,
     on_video_ended = endVideo,
 )

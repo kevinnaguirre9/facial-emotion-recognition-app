@@ -1,3 +1,5 @@
+from time import sleep
+
 import cv2
 import av
 import numpy as np
@@ -28,6 +30,8 @@ class ClassroomStudentsEmotionsRecognizer:
     def recognize(self, video_frame: av.VideoFrame) -> av.VideoFrame:
 
         print(f"Recognizing emotions for session: {self.__session_id}")
+
+        sleep(1)
 
         ndarray_video_frame = video_frame.to_ndarray(format="bgr24")
 
