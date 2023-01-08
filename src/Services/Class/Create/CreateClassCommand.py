@@ -1,5 +1,5 @@
 
-class CrateClassCommand:
+class CreateClassCommand:
 
     def __init__(
             self,

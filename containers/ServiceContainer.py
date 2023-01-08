@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import logging.config
 
 import config.database as db_config
+from src.Repositories.Class.MongoDbClassRepository import MongoDbClassRepository
 from src.Repositories.Common.MongoDBClient import MongoDBClient
 from src.Repositories.EmotionRecognition.MongoDbEmotionRecognitionRepository import MongoDbEmotionRecognitionRepository
 
@@ -27,6 +28,11 @@ class ServiceContainer(containers.DeclarativeContainer):
 
     emotion_recognition_repository = providers.Factory(
         MongoDbEmotionRecognitionRepository,
+        mongo_client = mongo_db_repository_client
+    )
+
+    class_repository = providers.Factory(
+        MongoDbClassRepository,
         mongo_client = mongo_db_repository_client
     )
 

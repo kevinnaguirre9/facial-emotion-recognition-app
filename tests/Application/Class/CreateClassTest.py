@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 from faker import Faker
 
-from src.Services.Class.Create.CreateClassCommand import CrateClassCommand
+from src.Services.Class.Create.CreateClassCommand import CreateClassCommand
 from src.Services.Class.Create.ClassCreator import ClassCreator
 
 
@@ -16,7 +16,7 @@ class CreateClassTest(TestCase):
 
     def test_should_create_class(self):
 
-        command = CrateClassCommand(
+        command = CreateClassCommand(
             subject = self.__faker.word(),
             degree = self.__faker.word(),
             section = self.__faker.word(),
