@@ -5,10 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /var/www/app
-    container_name: face-emotion-detection-app
+    container_name: facial-emotion-recognition-app
     restart: unless-stopped
     tty: true
-    command: streamlit run --server.port 8080 app.py
     env_file:
       - .env
     ports:
@@ -16,11 +15,11 @@ services:
     volumes:
       - ./:/var/www/app
     networks:
-      - face-emotion-detection-app-net
+      - facial-emotion-recognition-net
 
   mongo:
     image: "mongo:5.0"
-    container_name: face-emotion-detection-mongo-db
+    container_name: facial-emotion-recognition-mongo-db
     command: mongod --auth
     restart: unless-stopped
     logging:
@@ -34,7 +33,7 @@ services:
       - 'mongo-data:/data/db'
       - 'mongo-log:/var/log/mongodb/'
     networks:
-      - face-emotion-detection-app-net
+      - facial-emotion-recognition-net
 
 volumes:
   mongo-data:
@@ -43,5 +42,5 @@ volumes:
       driver: local
 
 networks:
-  face-emotion-detection-app-net:
+  facial-emotion-recognition-net:
     driver: bridge
