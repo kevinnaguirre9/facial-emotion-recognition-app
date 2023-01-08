@@ -6,7 +6,7 @@ from src.Services.Class.Search.SearchClassesQuery import SearchClassesQuery
 
 st.set_page_config(layout="wide")
 
-st.title("Classes")
+st.title("Listado de clases")
 
 columns = st.columns(6)
 fields = ["№", 'Materia', 'Carrera', 'Sección', "Periodo", "Acciones"]
@@ -33,4 +33,4 @@ for index, class_response in enumerate(classes.classes()):
     with col5:
         st.write(class_response.academic_period())
     with col6:
-        (st.button('Ver', key=index))
+        st.button('Iniciar', key=index, help="Iniciar sesión de reconocimiento de emociones")

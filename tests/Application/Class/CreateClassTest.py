@@ -21,18 +21,6 @@ class CreateClassTest(TestCase):
             degree = self.__faker.word(),
             section = self.__faker.word(),
             academic_period=random.choice(['2021-2022', '2022-2023']),
-            weekly_schedule = [
-                {
-                    'weekday': 'Monday',
-                    'start_time': '08:00',
-                    'end_time': '10:00'
-                },
-                {
-                    'weekday': 'Wednesday',
-                    'start_time': '08:00',
-                    'end_time': '10:00'
-                },
-            ]
         )
 
         ClassCreator(self.__repository).handle(command)

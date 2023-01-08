@@ -31,5 +31,4 @@ class ClassesSearcher:
             class_entity.degree(),
             class_entity.section(),
             class_entity.academic_period(),
-            class_entity.schedule().to_primitives(),
         )
