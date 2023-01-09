@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 from faker import Faker
 
-from src.Services.Class.Create.CreateClassCommand import CrateClassCommand
+from src.Services.Class.Create.CreateClassCommand import CreateClassCommand
 from src.Services.Class.Create.ClassCreator import ClassCreator
 
 
@@ -16,23 +16,11 @@ class CreateClassTest(TestCase):
 
     def test_should_create_class(self):
 
-        command = CrateClassCommand(
+        command = CreateClassCommand(
             subject = self.__faker.word(),
             degree = self.__faker.word(),
             section = self.__faker.word(),
             academic_period=random.choice(['2021-2022', '2022-2023']),
-            weekly_schedule = [
-                {
-                    'weekday': 'Monday',
-                    'start_time': '08:00',
-                    'end_time': '10:00'
-                },
-                {
-                    'weekday': 'Wednesday',
-                    'start_time': '08:00',
-                    'end_time': '10:00'
-                },
-            ]
         )
 
         ClassCreator(self.__repository).handle(command)

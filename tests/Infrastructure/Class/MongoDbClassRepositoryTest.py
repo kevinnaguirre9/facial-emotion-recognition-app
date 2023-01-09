@@ -1,16 +1,14 @@
 from unittest import TestCase
 
 from src.Domain.Class.ValueObjects.ClassId import ClassId
-from src.Repositories.Class.MongoDbClassRepository import MongoDbClassRepository
-from src.Repositories.Common.MongoDBClient import MongoDBClient
 from tests.Domain.Class.Stubs.ClassStub import ClassStub
+from containers.ServiceContainer import ServiceContainer
 
 
 class MongoDbClassRepositoryTest(TestCase):
 
     def setUp(self) -> None:
-        self.__mongo_client = MongoDBClient()
-        self.__class_repository = MongoDbClassRepository(self.__mongo_client)
+        self.__class_repository = ServiceContainer.class_repository()
         self.__collection_name = self.__class_repository.COLLECTION_NAME
 
     def test_should_save_class(self):
@@ -63,8 +61,10 @@ class MongoDbClassRepositoryTest(TestCase):
 
 
     def tearDown(self) -> None:
-        self.__mongo_client.get_connection()[self.__collection_name].delete_many({})
-        self.__mongo_client.close_connection()
+        ServiceContainer\
+            .mongo_db_repository_client()\
+            .get_db_connection()[self.__collection_name]\
+            .delete_many({})
 
 
 
