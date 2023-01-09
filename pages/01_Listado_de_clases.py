@@ -8,17 +8,21 @@ st.set_page_config(layout="wide")
 
 st.title("Listado de clases")
 
-columns = st.columns(6)
-fields = ["№", 'Materia', 'Carrera', 'Sección', "Periodo", "Acciones"]
-for col, field_name in zip(columns, fields):
-    header_text = f'<p style="color:rgb(255, 75, 75); font-size: 15px;">{field_name}</p>'
-    col.markdown(header_text, unsafe_allow_html=True)
-
 # # Path: pages\01_Listado_de_clases.py
 classes_query = SearchClassesQuery({}, 1, 5)
 
 classes = ClassesSearcher(ServiceContainer.class_repository())\
     .handle(classes_query)
+
+if not classes.classes():
+    st.write("No hay clases disponibles")
+    st.stop()
+
+columns = st.columns(6)
+fields = ["№", 'Materia', 'Carrera', 'Sección', "Periodo", "Acciones"]
+for col, field_name in zip(columns, fields):
+    header_text = f'<p style="color:rgb(255, 75, 75); font-size: 15px;">{field_name}</p>'
+    col.markdown(header_text, unsafe_allow_html=True)
 
 for index, class_response in enumerate(classes.classes()):
     col1, col2, col3, col4, col5, col6 = st.columns(6)
