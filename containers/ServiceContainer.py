@@ -6,6 +6,7 @@ import config.database as db_config
 from src.Repositories.Class.MongoDbClassRepository import MongoDbClassRepository
 from src.Repositories.Common.MongoDBClient import MongoDBClient
 from src.Repositories.EmotionRecognition.MongoDbEmotionRecognitionRepository import MongoDbEmotionRecognitionRepository
+from src.Repositories.Session.MongoDbSessionRepository import MongoDbSessionRepository
 
 
 class ServiceContainer(containers.DeclarativeContainer):
@@ -33,6 +34,11 @@ class ServiceContainer(containers.DeclarativeContainer):
 
     class_repository = providers.Factory(
         MongoDbClassRepository,
+        mongo_client = mongo_db_repository_client
+    )
+
+    session_repository = providers.Factory(
+        MongoDbSessionRepository,
         mongo_client = mongo_db_repository_client
     )
 

@@ -32,6 +32,8 @@ class SessionCreator:
             class_entity.class_id(),
         )
 
+        session.start()
+
         self.__session_repository.save(session)
 
         return session
