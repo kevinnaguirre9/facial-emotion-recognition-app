@@ -11,8 +11,6 @@ class SessionFinisher:
     def handle(self, command: FinishSessionCommand):
         session = self.session_repository.find(SessionId(command.session_id()))
 
-        print(session.to_primitives())
-
         session.end()
 
         self.session_repository.save(session)
