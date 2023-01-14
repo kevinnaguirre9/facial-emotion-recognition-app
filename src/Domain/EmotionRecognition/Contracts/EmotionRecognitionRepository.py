@@ -14,7 +14,7 @@ class EmotionRecognitionRepository(ABC):
         pass
 
     @abstractmethod
-    def search(self, criteria: dict, limit: int, page: int) -> list[EmotionRecognition]|None:
+    def search(self, criteria: dict, limit: int|None, page: int|None) -> list[EmotionRecognition]|None:
         pass
 
     @abstractmethod

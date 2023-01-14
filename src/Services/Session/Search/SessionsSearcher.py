@@ -22,14 +22,12 @@ class SessionsSearcher:
 
 
     def handle(self, query: SearchSessionsQuery) -> SessionsResponse:
+
         sessions = self.__session_repository.search(
             query.filters(),
             query.per_page(),
             query.page()
         )
-
-        # for session in sessions:
-        #     print(session.session_id().value())
 
         return SessionsResponse(
             list(map(self.to_response, sessions))

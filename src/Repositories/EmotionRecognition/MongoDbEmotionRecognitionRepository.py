@@ -33,11 +33,14 @@ class MongoDbEmotionRecognitionRepository(EmotionRecognitionRepository):
         return self.__to_entity()(dict(emotion_recognition_entity))
 
 
-    def search(self, criteria: dict, limit: int, page: int) -> list[EmotionRecognition] | None:
+    def search(self, criteria: dict, limit: int|None, page: int|None) -> list[EmotionRecognition]|None:
         emotion_recognitions = self.__mongo_client[self.COLLECTION_NAME] \
             .find(criteria) \
-            .skip((page - 1) * limit) \
-            .limit(limit)
+
+        if limit is not None and page is not None:
+            emotion_recognitions\
+                .skip((page - 1) * limit) \
+                .limit(limit)
 
         return list(map(self.__to_entity(), emotion_recognitions))
 
