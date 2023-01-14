@@ -29,8 +29,6 @@ class ClassroomStudentsEmotionsRecognizer:
 
     def recognize(self, video_frame: av.VideoFrame) -> av.VideoFrame:
 
-        print(f"Recognizing emotions for session: {self.__session_id}")
-
         sleep(1)
 
         ndarray_video_frame = video_frame.to_ndarray(format="bgr24")
