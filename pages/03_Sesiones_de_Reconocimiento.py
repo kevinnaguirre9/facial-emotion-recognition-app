@@ -1,4 +1,6 @@
+import pandas as pd
 import streamlit as st
+import altair as alt
 
 from containers.ServiceContainer import ServiceContainer
 from src.Services.EmotionRecognition.Search.EmotionRecognitionsSearcher import EmotionRecognitionsSearcher
@@ -79,7 +81,7 @@ for index, session_response in enumerate(sessions_response.sessions()):
 
 if 'session_id_statistics' in st.session_state:
 
-    st.write("Estadísticas de la sesión")
+    st.title("Estadísticas de la sesión")
 
     search_emotion_recognitions_query = SearchEmotionRecognitionsQuery(
         {
@@ -95,34 +97,64 @@ if 'session_id_statistics' in st.session_state:
         st.write("No hay estadísticas disponibles")
         st.stop()
 
-    columns = st.columns(9)
+    emotion_recognition_raw_records = list(
+        map(
+            lambda emotion_recognition_response: emotion_recognition_response.to_dict(),
+            emotion_recognitions.emotion_recognitions()
+        )
+    )
 
-    fields = ["№", 'Enojo', 'Disgusto', 'Miedo', 'Felicidad', 'Neutral', 'Tristeza', 'Sorpresa', 'Fecha']
+    # ---------- BASIC METRICS  ----------
 
-    for col, field_name in zip(columns, fields):
-        header_text = f'<p style="color:rgb(255, 75, 75); font-size: 15px;">{field_name}</p>'
-        col.markdown(header_text, unsafe_allow_html=True)
+    df = pd.DataFrame(emotion_recognition_raw_records)
 
-    for index, emotion_recognition in enumerate(emotion_recognitions.emotion_recognitions()):
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
-        with col1:
-            st.write(index + 1)
-        with col2:
-            st.write(emotion_recognition.angry())
-        with col3:
-            st.write(emotion_recognition.disgusted())
-        with col4:
-            st.write(emotion_recognition.fearful())
-        with col5:
-            st.write(emotion_recognition.happy())
-        with col6:
-            st.write(emotion_recognition.neutral())
-        with col7:
-            st.write(emotion_recognition.sad())
-        with col8:
-            st.write(emotion_recognition.surprised())
-        with col9:
-            st.write(emotion_recognition.recorded_at())
+    df['recorded_at'] = pd.to_datetime(df['recorded_at'])
+
+    df = df.set_index('recorded_at')
+
+    df = df.drop(columns=['emotion_recognition_id', 'session_id'])
+
+    df_grouped = df.mean().round().sort_values(ascending=False)
+
+    st.write('Promedio de estudiantes por emociones')
+
+    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+
+    col1.metric('Feliz', df_grouped['happy'])
+    col2.metric('Triste', df_grouped['sad'])
+    col3.metric('Enojado', df_grouped['angry'])
+    col4.metric('Sorprendido', df_grouped['surprised'])
+    col5.metric('Neutral', df_grouped['neutral'])
+    col6.metric('Disgustado', df_grouped['disgusted'])
+    col7.metric('Con miedo', df_grouped['fearful'])
+
+    # ---------- END BASIC METRICS  ----------
+
+    # ---------- GRAPHIC METRICS  ----------
+
+    st.write('Gráfico del promedio de emociones por estudiantes')
+    st.line_chart(df)
+
+    # Altair chart
+    df = pd.DataFrame(emotion_recognition_raw_records)
+    df['recorded_at'] = pd.to_datetime(df['recorded_at'])
+    df = df.set_index('recorded_at')
+    df = df.drop(columns=['emotion_recognition_id', 'session_id'])
+
+    df_grouped = df.mean().reset_index()
+    df_grouped.columns = ['emotion', 'total_students']
+
+    source_dataframe = pd.DataFrame(df_grouped)
+
+    bar_chart = alt.Chart(source_dataframe).mark_bar().encode(
+        x=alt.X('emotion', title='Emotion'),
+        y=alt.Y('total_students', title='Average students'),
+        color=alt.Color('emotion', legend=None),
+    )
+
+    st.altair_chart(bar_chart, use_container_width=True)
+
+    # ---------- END GRAPHIC METRICS  ----------
 
 # ---------- END STATISTICS FOR EMOTION RECOGNITION SESSION ----------
 
