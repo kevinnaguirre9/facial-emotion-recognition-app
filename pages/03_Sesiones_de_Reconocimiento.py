@@ -11,6 +11,8 @@ from src.Services.Session.Search.SessionsSearcher import SessionsSearcher
 
 st.set_page_config(layout="wide")
 
+st.sidebar.title("Sistema de Reconocimiento de Emociones")
+
 st.title("Sesiones de reconocimiento de emociones")
 
 # ---------- END PAGE STYLES-CONFIGS ---------
@@ -19,7 +21,7 @@ st.title("Sesiones de reconocimiento de emociones")
 # ---------- SHOW STATISTICS ----------
 
 def show_statistics(session_id: str):
-    st.session_state.session_id = session_id
+    st.session_state.session_id_statistics = session_id
 
 
 # ---------- END SHOW STATISTICS ----------
@@ -75,13 +77,13 @@ for index, session_response in enumerate(sessions_response.sessions()):
 
 # ---------- STATISTICS FOR EMOTION RECOGNITION SESSION ----------
 
-if 'session_id' in st.session_state:
+if 'session_id_statistics' in st.session_state:
 
     st.write("Estadísticas de la sesión")
 
     search_emotion_recognitions_query = SearchEmotionRecognitionsQuery(
         {
-            "session_id": st.session_state.session_id
+            "session_id": st.session_state.session_id_statistics
         }
     )
 
