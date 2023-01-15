@@ -8,6 +8,8 @@ from src.Services.Class.Create.CreateClassCommand import CreateClassCommand
 
 st.set_page_config(layout="wide")
 
+st.sidebar.title("Sistema de Reconocimiento de Emociones")
+
 st.subheader("Creación de Clase")
 
 with st.form("create_class_form", clear_on_submit=True):

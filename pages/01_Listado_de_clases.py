@@ -15,6 +15,8 @@ from src.Services.Session.Finish.SessionFinisher import SessionFinisher
 
 st.set_page_config(layout="wide")
 
+st.sidebar.title("Sistema de Reconocimiento de Emociones")
+
 st.title("Listado de clases")
 
 
@@ -39,13 +41,7 @@ def start_emotion_recognition_session(class_data: ClassResponse):
     st.session_state.class_subject = class_data.subject()
 
 def finish_emotion_recognition_session():
-    print('------------------ finish_emotion_recognition_session')
-
-    SessionFinisher(
-        ServiceContainer.session_repository(),
-    ).handle(FinishSessionCommand(st.session_state.session_id))
-
-    # del st.session_state['session_id']
+    del st.session_state['session_id']
 
 
 # ---------- START CLASSES LIST ----------
@@ -100,7 +96,14 @@ if 'session_id' in st.session_state:
             ServiceContainer.emotion_recognition_repository(),
             st.session_state.session_id,
         ).recognize,
-        on_video_ended=finish_emotion_recognition_session,
+        on_video_ended=SessionFinisher(ServiceContainer.session_repository(), st.session_state.session_id).handle,
+    )
+
+    st.button(
+        'Finalizar',
+        key='finish',
+        help="Finalizar sesión de reconocimiento de emociones",
+        on_click=finish_emotion_recognition_session,
     )
 
 # ---------- END WEB RTC STREAM ----------

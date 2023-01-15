@@ -64,3 +64,18 @@ class EmotionRecognitionResponse:
 
     def recorded_at(self) -> str:
         return self.__recorded_at
+
+
+    def to_dict(self) -> dict:
+        return {
+            'emotion_recognition_id': self.emotion_recognition_id(),
+            'session_id': self.session_id(),
+            'angry': self.angry(),
+            'disgusted': self.disgusted(),
+            'fearful': self.fearful(),
+            'happy': self.happy(),
+            'neutral': self.neutral(),
+            'sad': self.sad(),
+            'surprised': self.surprised(),
+            'recorded_at': self.recorded_at(),
+        }
